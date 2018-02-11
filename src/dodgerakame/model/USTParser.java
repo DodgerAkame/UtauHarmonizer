@@ -1,5 +1,6 @@
 package dodgerakame.model;
 
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.List;
 
@@ -11,11 +12,11 @@ public class USTParser {
     public USTParser() { }
 
     public USTParser(UST ust){
-        this.ust = new UST(ust.getUri());
+        this.ust = ust;
 
         // Reading file
         try {
-            this.content  = Files.readAllLines(this.ust.getFile().toPath());
+            this.content = Files.readAllLines(this.ust.getFile().toPath(), Charset.forName("ISO-8859-1"));
         }
         catch (Exception e){
             // TODO Générer un fichier log d'erreur ou un mail à moi
