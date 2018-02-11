@@ -19,6 +19,22 @@ public class HarmonyCreation {
         this.parser = new USTParser(this.ust);
     }
 
+    public UST getUst() {
+        return ust;
+    }
+
+    public void setUst(UST ust) {
+        this.ust = ust;
+    }
+
+    public USTParser getParser() {
+        return parser;
+    }
+
+    public void setParser(USTParser parser) {
+        this.parser = parser;
+    }
+
     /**
      * Return the file's content processed given the method asked for.
      *
@@ -53,7 +69,7 @@ public class HarmonyCreation {
             // Searching for the pitch
             if (line.contains("NoteNum=")) {
                 String[] lineContent = line.split("=");
-                int NoteNum = Integer.getInteger(lineContent[1]);
+                int NoteNum = Integer.parseInt(lineContent[1]);
                 notes.add(NoteNum);
             }
         }

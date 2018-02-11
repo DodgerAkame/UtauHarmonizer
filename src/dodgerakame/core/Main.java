@@ -10,9 +10,9 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        UST UST = new UST("/home/dodger/Bureau/Luka [Main].ust");
+        UST UST = new UST("src/dodgerakame/main.ust");
         HarmonyCreation magic = new HarmonyCreation(UST);
-        File dest = new File("/home/dodger/Bureau/test.ust");
+        File dest = new File("src/dodgerakame/test.ust");
 
         List<String> content = magic.ProcessHarmonyCreation("3");
         FileWriter fw;
@@ -30,8 +30,6 @@ public class Main {
 
         }
 
-
-        System.out.print("Done");
     }
 
 }
