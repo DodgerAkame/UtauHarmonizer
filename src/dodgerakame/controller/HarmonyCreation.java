@@ -83,9 +83,9 @@ public class HarmonyCreation {
         // Sorting the notes by ascending orders
         Collections.sort(notes);
 
-        // Adding the higher pitch lower by an octave TODO sûr que ça marche ?
+       /* // Adding the higher pitch lower by an octave TODO sûr que ça marche ?
         notes.add(notes.get(0) - 12);
-        notes.add(notes.get(1) - 12);
+        notes.add(notes.get(1) - 12);*/
 
         // Creating the new file
         for (String line : parser.getContent()){
@@ -94,7 +94,13 @@ public class HarmonyCreation {
                 int actualNote = Integer.parseInt(lineContent[1]);
                 int index = notes.indexOf(actualNote);
                 try {
-                    int newNote = notes.get(index + 2);
+                    int newNote;
+                    if (index + 2 < notes.size() )
+                        newNote = notes.get(index + 2);
+                    else if (index - 2 >= 0)
+                        newNote = notes.get(index - 2);
+                    else
+                        newNote = notes.get(index - 1);
 
                     lineContent[1] = String.valueOf(newNote);
                     line = lineContent[0] + "=" + lineContent[1];
