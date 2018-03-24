@@ -39,19 +39,19 @@ public class View {
                 try {
                     input = doSearchFile();
                     pathToUSTSourceTextField.setText(input.getAbsolutePath());
-                    String[] directory = input.getAbsolutePath().split(File.separator);
+                    String[] directory = input.getAbsolutePath().split(File.pathSeparator);
                     StringBuffer output = new StringBuffer();
 
-                    for (int i = 0; i < directory.length - 1; i++){
-                     output.append(directory[i] + File.separator);
+                    for (int i = 0; i < directory.length - 1; i++) {
+                        output.append(directory[i] + File.separator);
                     }
 
-                    output.append(directory[directory.length -1].split(".ust")[0] + " - Harmony.ust");
+                    output.append(directory[directory.length - 1].split(".ust")[0] + " - Harmony.ust");
                     pathToUSTsToTextField.setText(output.toString());
 
-                }
-                catch (Exception ex){
+                } catch (Exception ex) {
                     //TODO something
+                    System.err.println(ex);
                 }
             }
         });
@@ -59,11 +59,10 @@ public class View {
         searchButton1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                try{
+                try {
                     input = doSearchSaveFile();
                     pathToUSTsToTextField.setText(input.getAbsolutePath());
-                }
-                catch (Exception e){
+                } catch (Exception e) {
 
                 }
             }
@@ -84,8 +83,8 @@ public class View {
         radioButton4.setText("Range - 5");
         radioButton4.setActionCommand("-5");
 
-        radioButton5.setText("Dynamic range");
-        radioButton5.setActionCommand("Note");
+        radioButton5.setText("Using range");
+        radioButton5.setActionCommand("UsingRange");
 
         buttonGroup.add(radioButton1);
         buttonGroup.add(radioButton2);
@@ -99,8 +98,7 @@ public class View {
             public void actionPerformed(ActionEvent actionEvent) {
                 try {
                     processRequest();
-                }
-                catch (Exception e){
+                } catch (Exception e) {
                     System.err.println(e);
                     System.exit(-1);
                 }
@@ -111,8 +109,7 @@ public class View {
             public void mouseClicked(MouseEvent mouseEvent) {
                 try {
                     processRequest();
-                }
-                catch (Exception e){
+                } catch (Exception e) {
                     System.err.println(e);
                     System.exit(-1);
                 }
@@ -120,7 +117,7 @@ public class View {
         });
     }
 
-    private void processRequest() throws IOException{
+    private void processRequest() throws IOException {
         UST src = new UST(pathToUSTSourceTextField.getText());
         UST dest = new UST(pathToUSTsToTextField.getText());
         HarmonyCreation harmonyCreation = new HarmonyCreation(src);
@@ -129,7 +126,20 @@ public class View {
         FileWriter fw;
 
         try {
-            ;
+            boolean fileExists = true;
+
+            do {
+                if (dest.getFile().exists()) {
+                    if (JOptionPane.showConfirmDialog(null, "The file " + dest.getFile().getName() + " already exists. Overwrite it?") == 0) {
+                        fileExists = false;
+                    } else {
+                        dest.setFile(doSearchSaveFile());
+                    }
+                }
+
+            } while (!fileExists);
+
+
             fw = new FileWriter(dest.getFile());
 
             for (String line : fileProcessedContent) {
@@ -153,23 +163,30 @@ public class View {
         fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         int chooserState = fileChooser.showOpenDialog(null);
-        if (chooserState == JFileChooser.APPROVE_OPTION){
+        if (chooserState == JFileChooser.APPROVE_OPTION) {
             dest = fileChooser.getSelectedFile();
         }
 
         return dest;
     }
 
-    private File doSearchSaveFile() throws IOException{
+    private File doSearchSaveFile() throws IOException {
         File dest = null;
+        boolean fileExists = true;
 
-        fileChooser = new JFileChooser();
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        int chooserState = fileChooser.showSaveDialog(null);
-        if (chooserState == JFileChooser.SAVE_DIALOG){
-            dest = fileChooser.getSelectedFile();
-        }
+        do {
+            fileChooser = new JFileChooser();
+            fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            int chooserState = fileChooser.showSaveDialog(null);
 
+            if (chooserState == JFileChooser.APPROVE_OPTION)
+                dest = fileChooser.getSelectedFile();
+
+            if (dest.exists())
+                if (JOptionPane.showConfirmDialog(null, "The file " + dest.getName() + " already exists. Overwrite it?") == 0)
+                    fileExists = false;
+
+        } while (!fileExists);
         return dest;
     }
 
