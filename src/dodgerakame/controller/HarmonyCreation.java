@@ -52,7 +52,7 @@ public class HarmonyCreation {
                 return ProcessWithNumber(-3);
             case "-5":
                 return ProcessWithNumber(-5);
-            case "NotesRangeLower2":
+            case "UsingRange":
                 return ProcessWithRangeLower2();
             default:
                 return null;
