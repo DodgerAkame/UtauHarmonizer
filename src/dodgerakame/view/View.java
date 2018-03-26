@@ -125,21 +125,29 @@ public class View {
         String method = buttonGroup.getSelection().getActionCommand();
         List<String> fileProcessedContent = harmonyCreation.ProcessHarmonyCreation(method);
         FileWriter fw;
+        boolean fileExists = true;
 
         try {
-            boolean fileExists = true;
 
             do {
                 if (dest.getFile().exists()) {
+                    fileExists = true;
                     if (JOptionPane.showConfirmDialog(null, "The file " + dest.getFile().getName() + " already exists. Overwrite it?") == 0) {
                         fileExists = false;
                     } else {
                         dest.setFile(doSearchSaveFile());
+                        dest.setUri(dest.getFile().getAbsolutePath());
+                        fileExists = false;
                     }
                 }
 
-            } while (!fileExists);
+            } while (fileExists);
 
+
+            if (!dest.getFile().getName().contains(".ust")){
+                dest.setFile(new File(dest.getUri() + ".ust"));
+                dest.setUri(dest.getFile().getAbsolutePath());
+            }
 
             fw = new FileWriter(dest.getFile());
 
