@@ -4,6 +4,7 @@ import dodgerakame.controller.HarmonyCreation;
 import dodgerakame.model.UST;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -161,6 +162,8 @@ public class View {
     private File doSearchFile() throws IOException {
         File dest = null;
         fileChooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("UST file", "ust", "ust");
+        fileChooser.setFileFilter(filter);
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         int chooserState = fileChooser.showOpenDialog(null);
         if (chooserState == JFileChooser.APPROVE_OPTION) {
@@ -176,6 +179,8 @@ public class View {
 
         do {
             fileChooser = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("UST file", "ust", "ust");
+            fileChooser.setFileFilter(filter);
             fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
             int chooserState = fileChooser.showSaveDialog(null);
 
