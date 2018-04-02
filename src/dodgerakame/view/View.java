@@ -139,6 +139,8 @@ public class View {
                         dest.setUri(dest.getFile().getAbsolutePath());
                         fileExists = false;
                     }
+                } else {
+                    fileExists = false;
                 }
 
             } while (fileExists);
