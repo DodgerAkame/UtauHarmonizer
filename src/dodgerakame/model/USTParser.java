@@ -1,6 +1,7 @@
 package dodgerakame.model;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.List;
 
@@ -16,10 +17,11 @@ public class USTParser {
 
         // Reading file
         try {
-            this.content = Files.readAllLines(this.ust.getFile().toPath(), Charset.forName("ISO-8859-1"));
+            this.content = Files.readAllLines(this.ust.getFile().toPath(), StandardCharsets.ISO_8859_1);
         }
         catch (Exception e){
             // TODO Générer un fichier log d'erreur ou un mail à moi
+            System.out.println(e.toString());
             System.exit(-1);
         }
     }
